@@ -1,0 +1,15 @@
+{
+  "name": "elian-portfolio",
+  "version": "1.0.0",
+  "description": "Elian Kimani - AI Solutions Architect Portfolio",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.7"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
