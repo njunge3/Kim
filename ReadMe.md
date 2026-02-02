@@ -1,4 +1,4 @@
-## Vercel App Personal Blog 
-# Inbuilt dynamic CI/CD 4 JOb Tuning.
+# 3D Vercel Personal Blog 
+## Inbuilt dynamic CI/CD 4 JOb Tuning.
 
-# Job Tuning - Dynamic perso al blog that is able to align you pages to desired job requirmentds based on your cv prompt and job description.
+### Job Tuning - A 3D Vercel-hosted personal blog with built-in AI that dynamically restructures itself to match a target job description.
