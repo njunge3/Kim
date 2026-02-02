@@ -607,23 +607,46 @@
 
         <!-- CONTACT -->
         <section class="contact-section" data-section="5">
-            <div>
-                <h2 class="section-title">CONNECT</h2>
-                <div class="contact-info">
-                    <a href="mailto:eliankim.007@gmail.com" class="contact-item" style="display: block;">
-                        ELIANKIM.007@GMAIL.COM
-                    </a>
-                    <a href="tel:+254797310992" class="contact-item" style="display: block;">
-                        +254 797 310 992
-                    </a>
-                    <a href="https://github.com/jacke-code" target="_blank" class="contact-item" style="display: block;">
-                        GITHUB / JACKE-CODE
-                    </a>
-                    <a href="https://github.com/njunge3" target="_blank" class="contact-item" style="display: block;">
-                        GITHUB / NJUNGE3
-                    </a>
-                </div>
-                <div style="margin-top: 4rem; font-size: 0.875rem; letter-spacing: 0.3em; opacity: 0.5;">
+            <div style="max-width: 800px; width: 100%;">
+                <h2 class="section-title" style="text-align: center;">CONNECT</h2>
+                
+                <form id="contact-form" style="margin-top: 3rem;">
+                    <div style="margin-bottom: 2rem;">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="YOUR EMAIL"
+                            required
+                            style="width: 100%; padding: 1.5rem; background: transparent; border: 2px solid #fff; color: #fff; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;"
+                        >
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            placeholder="YOUR MESSAGE"
+                            required
+                            rows="8"
+                            style="width: 100%; padding: 1.5rem; background: transparent; border: 2px solid #fff; color: #fff; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; resize: vertical; font-family: 'Helvetica Neue', Arial, sans-serif;"
+                        ></textarea>
+                    </div>
+                    
+                    <button 
+                        type="submit" 
+                        id="submit-btn"
+                        style="width: 100%; padding: 1.5rem; background: #fff; color: #000; border: none; font-size: 1.25rem; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;"
+                        onmouseover="this.style.background='#000'; this.style.color='#fff'; this.style.border='2px solid #fff';"
+                        onmouseout="this.style.background='#fff'; this.style.color='#000'; this.style.border='none';"
+                    >
+                        SEND
+                    </button>
+                    
+                    <div id="form-status" style="margin-top: 1.5rem; text-align: center; font-size: 0.875rem; letter-spacing: 0.2em; opacity: 0; transition: opacity 0.3s ease;"></div>
+                </form>
+                
+                <div style="margin-top: 4rem; font-size: 0.875rem; letter-spacing: 0.3em; opacity: 0.5; text-align: center;">
                     NAIROBI, KENYA
                 </div>
             </div>
