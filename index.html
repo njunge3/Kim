@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELIAN KIMANI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 0;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.85;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            mix-blend-mode: difference;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 3vw, 2rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .section-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            mix-blend-mode: difference;
+        }
+
+        .project-grid {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .project-item {
+            border-top: 2px solid #fff;
+            padding: 3rem 2rem;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-item:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .project-item:last-child {
+            border-bottom: 2px solid #fff;
+        }
+
+        .project-number {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .project-title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .project-desc {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 800px;
+            opacity: 0.8;
+        }
+
+        .project-tags {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.5rem 1.5rem;
+            border: 1px solid currentColor;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .skills-grid {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0;
+            border: 2px solid #fff;
+        }
+
+        .skill-item {
+            padding: 3rem 2rem;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .skill-name {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-section {
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .contact-info {
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 1rem 0;
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .contact-item:hover {
+            border-bottom: 2px solid #fff;
+            transform: translateX(1rem);
+        }
+
+        .experience-timeline {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .timeline-item {
+            border-left: 4px solid #fff;
+            padding: 3rem 0 3rem 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 3rem;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .timeline-year {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .timeline-title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .timeline-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.7;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            max-width: 1400px;
+            width: 100%;
+            margin: 3rem auto;
+        }
+
+        .stat-box {
+            padding: 3rem 2rem;
+            border: 2px solid #fff;
+            text-align: center;
+            margin: -1px;
+        }
+
+        .stat-number {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .project-title {
+                font-size: 1.5rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-item {
+                padding-left: 2rem;
+            }
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .nav-dot.active {
+            background: #fff;
+            opacity: 1;
+        }
+
+        .nav-dot:hover {
+            opacity: 1;
+            transform: scale(1.3);
+        }
+
+        @media (max-width: 768px) {
+            .nav-dots {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="scroll-indicator">SCROLL</div>
+
+    <div class="nav-dots">
+        <div class="nav-dot active" data-section="0"></div>
+        <div class="nav-dot" data-section="1"></div>
+        <div class="nav-dot" data-section="2"></div>
+        <div class="nav-dot" data-section="3"></div>
+        <div class="nav-dot" data-section="4"></div>
+        <div class="nav-dot" data-section="5"></div>
+    </div>
+
+    <div class="content">
+        <!-- HERO -->
+        <section class="hero" data-section="0">
+            <h1>ELIAN<br>KIMANI</h1>
+            <div class="subtitle">AI ARCHITECT / ENGINEER / LEADER</div>
+            
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">YEARS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">AI PROJECTS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">RECORDS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">03</div>
+                    <div class="stat-label">COUNTRIES</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section data-section="1">
+            <div style="max-width: 1200px; text-align: center;">
+                <h2 class="section-title">VISION</h2>
+                <p style="font-size: clamp(1.25rem, 3vw, 2rem); line-height: 1.4; font-weight: 300; opacity: 0.8;">
+                    BUILDING INTELLIGENT SYSTEMS THAT DRIVE SOCIAL IMPACT ACROSS EAST AFRICA. 
+                    SPECIALIZING IN AI SOLUTIONS FOR BANKING, INSURANCE, GOVERNMENT, AND COMMUNITY DEVELOPMENT.
+                    CREATING TECHNOLOGY THAT SCALES AND DELIVERS MEASURABLE ROI.
+                </p>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section data-section="2">
+            <div>
+                <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">WORK</h2>
+                <div class="project-grid">
+                    <div class="project-item">
+                        <div class="project-number">01</div>
+                        <div class="project-title">NUSAF IV</div>
+                        <div class="project-desc">
+                            AI-POWERED SOCIAL WELFARE PLATFORM FOR UGANDA GOVERNMENT. 
+                            FACIAL RECOGNITION, FRAUD DETECTION, FINGERPRINT VERIFICATION. 
+                            OFFLINE-FIRST MOBILE ARCHITECTURE FOR RURAL DEPLOYMENT.
+                        </div>
+                        <div class="project-tags">
+                            <span class="tag">TENSORFLOW</span>
+                            <span class="tag">COMPUTER VISION</span>
+                            <span class="tag">FRAUD ML</span>
+                            <span class="tag">DJANGO</span>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-number">02</div>
+                        <div class="project-title">OCR AUTOMATION</div>
+                        <div class="project-desc">
+                            ENTERPRISE OCR SYSTEM FOR SAFARICOM & CIC INSURANCE. 
+                            CONVERTS MEDICAL CLAIMS TO STRUCTURED DATA. 
+                            SAVES MILLIONS IN MANUAL UNDERWRITING ERRORS.
+                        </div>
+                        <div class="project-tags">
+                            <span class="tag">TESSERACT</span>
+                            <span class="tag">OPENCV</span>
+                            <span class="tag">PYTHON</span>
+                            <span class="tag">API</span>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-number">03</div>
+                        <div class="project-title">MIFUGO LIVESTOCK</div>
+                        <div class="project-desc">
+                            CNN-BASED CATTLE BIOMETRIC IDENTIFICATION. 
+                            MUZZLE PATTERN RECOGNITION FOR THEFT PREVENTION. 
+                            50,000+ CATTLE TRACKED FOR KENYA GOVERNMENT.
+                        </div>
+                        <div class="project-tags">
+                            <span class="tag">PYTORCH</span>
+                            <span class="tag">CNN</span>
+                            <span class="tag">MOBILE AI</span>
+                            <span class="tag">ANDROID</span>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-number">04</div>
+                        <div class="project-title">VCB BANKING</div>
+                        <div class="project-desc">
+                            MOBILE BANKING APPS FOR ANDROID & IOS. 
+                            FINACLE INTEGRATION WITH CBK COMPLIANCE. 
+                            SECURE PRODUCTION-GRADE FINANCIAL SERVICES.
+                        </div>
+                        <div class="project-tags">
+                            <span class="tag">ANDROID</span>
+                            <span class="tag">IOS</span>
+                            <span class="tag">BANKING</span>
+                            <span class="tag">SECURITY</span>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-number">05</div>
+                        <div class="project-title">BLOCKCHAIN PLATFORM</div>
+                        <div class="project-desc">
+                            EMERGING: BIOMETRIC IDENTITY ON BLOCKCHAIN. 
+                            SMART CONTRACTS FOR LIVESTOCK INVESTMENT. 
+                            DECENTRALIZED ASSET LEDGER FOR MICRO-LOANS.
+                        </div>
+                        <div class="project-tags">
+                            <span class="tag">BLOCKCHAIN</span>
+                            <span class="tag">SMART CONTRACTS</span>
+                            <span class="tag">BIOMETRICS</span>
+                            <span class="tag">WEB3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section data-section="3">
+            <div>
+                <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">SKILLS</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <div class="skill-name">TENSORFLOW</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">PYTORCH</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">COMPUTER VISION</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">NLP</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">PYTHON</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">DJANGO</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">REACT</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">NODE.JS</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">ANDROID</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">IOS</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">AWS</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">DOCKER</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">KUBERNETES</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">POSTGRESQL</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">MONGODB</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">AIRFLOW</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section data-section="4">
+            <div>
+                <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">JOURNEY</h2>
+                <div class="experience-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">MAY 2025 - PRESENT</div>
+                        <div class="timeline-title">HEAD OF AI & MOBILE</div>
+                        <div class="timeline-company">E&M TECHNOLOGY HOUSE</div>
+                        <div class="timeline-desc">
+                            LEAD AI AND MOBILE DIVISIONS. DESIGN INTELLIGENT SOLUTIONS FOR FINANCE, 
+                            INSURANCE, AGRICULTURE, GOVERNMENT. DELIVERED NUSAF IV, OCR SYSTEMS, 
+                            LIVESTOCK TRACKING. TECHNICAL DEMOS FOR GOVERNMENT OFFICIALS.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">FEB 2025 - APR 2025</div>
+                        <div class="timeline-title">HEAD OF MOBILE</div>
+                        <div class="timeline-company">E&M TECHNOLOGY HOUSE</div>
+                        <div class="timeline-desc">
+                            LED ALL MOBILE INITIATIVES. DEVELOPED VCB & CARITAS BANK APPS. 
+                            FINACLE INTEGRATION. PRODUCTION DEPLOYMENT. CLIENT TRAINING.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">AUG 2024 - JAN 2025</div>
+                        <div class="timeline-title">FULL-STACK DEVELOPER</div>
+                        <div class="timeline-company">E&M TECHNOLOGY HOUSE</div>
+                        <div class="timeline-desc">
+                            VCB-CBK REPORTING SYSTEM. AUTOMATED COMPLIANCE. 
+                            DJANGO, AIRFLOW, CELERY. STANDARD CHARTERED PLATFORMS. 
+                            EQUITY BANK RECONCILIATION.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">DEC 2020 - FEB 2022</div>
+                        <div class="timeline-title">SENIOR DEVELOPER</div>
+                        <div class="timeline-company">RISET SOFTWARE</div>
+                        <div class="timeline-desc">
+                            ERP & POS SYSTEMS. IOT WEIGHBRIDGE INTEGRATION. 
+                            M-PESA APIS. CONCRETE BATCHING AUTOMATION. 
+                            .NET, SPRING BOOT, MYSQL.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact-section" data-section="5">
+            <div>
+                <h2 class="section-title">CONNECT</h2>
+                <div class="contact-info">
+                    <a href="mailto:eliankim.007@gmail.com" class="contact-item" style="display: block;">
+                        ELIANKIM.007@GMAIL.COM
+                    </a>
+                    <a href="tel:+254797310992" class="contact-item" style="display: block;">
+                        +254 797 310 992
+                    </a>
+                    <a href="https://github.com/jacke-code" target="_blank" class="contact-item" style="display: block;">
+                        GITHUB / JACKE-CODE
+                    </a>
+                    <a href="https://github.com/njunge3" target="_blank" class="contact-item" style="display: block;">
+                        GITHUB / NJUNGE3
+                    </a>
+                </div>
+                <div style="margin-top: 4rem; font-size: 0.875rem; letter-spacing: 0.3em; opacity: 0.5;">
+                    NAIROBI, KENYA
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
