@@ -80,7 +80,7 @@
             max-width: 1400px;
             width: 100%;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
             padding: 2rem;
         }
@@ -93,7 +93,7 @@
             transition: all 0.15s ease;
             position: relative;
             background: #000;
-            min-height: 300px;
+            min-height: 280px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -104,6 +104,10 @@
             background: #fff;
             color: #000;
             transform: scale(1.02);
+        }
+
+        .category-card:last-child {
+            grid-column: 2 / 3;
         }
 
         .category-number {
@@ -574,6 +578,17 @@
         }
 
         /* MOBILE RESPONSIVE */
+        @media (max-width: 1024px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .category-card:last-child {
+                grid-column: 1 / -1;
+            }
+        }
+
         @media (max-width: 768px) {
             .category-grid {
                 grid-template-columns: 1fr;
@@ -583,6 +598,10 @@
             .category-card {
                 min-height: 200px;
                 padding: 2rem 1rem;
+            }
+
+            .category-card:last-child {
+                grid-column: auto;
             }
 
             .project-card {
@@ -647,7 +666,7 @@
         <!-- HERO -->
         <section class="hero" data-section="0">
             <h1>ELIAN<br>KIMANI</h1>
-            <div class="subtitle">AI ARCHITECT / ENGINEER / ACTUARY</div>
+            <div class="subtitle">AI ARCHITECT / ENGINEER / LEADER</div>
             
             <div class="stats-container">
                 <div class="stat-box">
@@ -706,7 +725,7 @@
 
                     <div class="category-card" data-category="banking">
                         <div class="category-number">04</div>
-                        <div class="category-title">INTERNET<br>BANKING</div>
+                        <div class="category-title">MOBILE<br>BANKING</div>
                         <div class="category-enter">[ENTER]</div>
                     </div>
 
@@ -719,6 +738,12 @@
                     <div class="category-card" data-category="uiux">
                         <div class="category-number">06</div>
                         <div class="category-title">UI/UX<br>DESIGN</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="data-science">
+                        <div class="category-number">07</div>
+                        <div class="category-title">DATA<br>SCIENCE &<br>ANALYTICS</div>
                         <div class="category-enter">[ENTER]</div>
                     </div>
                 </div>
