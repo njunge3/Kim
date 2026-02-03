@@ -4,6 +4,979 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ELIAN KIMANI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* STAR WARS OPENING CRAWL */
+        .star-wars-crawl {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            perspective: 400px;
+            perspective-origin: 50% 50%;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .crawl-container {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            animation: crawl 60s linear infinite;
+            transform-origin: 50% 100%;
+        }
+
+        .crawl-text {
+            font-family: 'Pathway Gothic One', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transform: rotateX(25deg);
+            padding: 0 2rem;
+        }
+
+        @keyframes crawl {
+            0% {
+                top: 100%;
+                opacity: 1;
+            }
+            100% {
+                top: -400%;
+                opacity: 0;
+            }
+        }
+
+        /* Optional: Hide crawl on scroll */
+        body.scrolled .star-wars-crawl {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 0;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.85;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            mix-blend-mode: difference;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 3vw, 2rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .section-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            mix-blend-mode: difference;
+        }
+
+        /* CATEGORY GRID STYLES */
+        .category-grid {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .category-card {
+            border: 2px solid #fff;
+            padding: 4rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            background: #000;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .category-card:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.02);
+        }
+
+        .category-card:last-child {
+            grid-column: 2 / 3;
+        }
+
+        .category-number {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+            opacity: 0.5;
+        }
+
+        .category-card:hover .category-number {
+            opacity: 1;
+        }
+
+        .category-title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .category-enter {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-top: 1rem;
+        }
+
+        .category-card:hover .category-enter {
+            opacity: 1;
+        }
+
+        /* PROJECT PAGE STYLES */
+        .project-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .project-page.active {
+            display: block;
+        }
+
+        .project-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            border-bottom: 2px solid #fff;
+            z-index: 101;
+        }
+
+        .back-btn {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-0.5rem);
+        }
+
+        .project-category-title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .project-counter {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            opacity: 0.5;
+        }
+
+        .project-scroll-container {
+            position: absolute;
+            top: 120px;
+            left: 0;
+            right: 0;
+            bottom: 100px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            padding: 2rem;
+            scroll-behavior: smooth;
+        }
+
+        .project-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .project-scroll-container::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .project-scroll-container::-webkit-scrollbar-thumb {
+            background: #fff;
+        }
+
+        .project-cards-wrapper {
+            display: inline-flex;
+            gap: 3rem;
+            padding: 2rem;
+        }
+
+        .project-card {
+            display: inline-block;
+            width: 600px;
+            max-width: 90vw;
+            border: 2px solid #fff;
+            padding: 3rem;
+            background: #000;
+            transition: all 0.3s ease;
+            white-space: normal;
+            vertical-align: top;
+        }
+
+        .project-card:hover {
+            transform: translateY(-1rem);
+            border-color: #fff;
+            box-shadow: 0 2rem 4rem rgba(255, 255, 255, 0.1);
+        }
+
+        .project-card-number {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        .project-card-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+
+        .project-card-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-tag {
+            padding: 0.5rem 1rem;
+            border: 1px solid #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .project-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 2px solid #fff;
+        }
+
+        .project-link:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .project-link.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .scroll-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            z-index: 101;
+        }
+
+        /* SKILLS GRID */
+        .skills-grid {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0;
+            border: 2px solid #fff;
+        }
+
+        .skill-item {
+            padding: 3rem 2rem;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .skill-name {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* EXPERIENCE TIMELINE */
+        .experience-timeline {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .timeline-item {
+            border-left: 4px solid #fff;
+            padding: 3rem 0 3rem 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 3rem;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .timeline-year {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .timeline-title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .timeline-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.7;
+        }
+
+        /* CONTACT FORM */
+        .contact-section {
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .contact-form {
+            max-width: 800px;
+            width: 100%;
+            margin: 3rem auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1.5rem;
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #666;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 200px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1.5rem;
+            background: #fff;
+            color: #000;
+            border: none;
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .form-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-status {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-status.visible {
+            opacity: 1;
+        }
+
+        /* STATS */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            max-width: 1400px;
+            width: 100%;
+            margin: 3rem auto;
+        }
+
+        .stat-box {
+            padding: 3rem 2rem;
+            border: 2px solid #fff;
+            text-align: center;
+            margin: -1px;
+        }
+
+        .stat-number {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            opacity: 0.6;
+        }
+
+        /* NAVIGATION DOTS */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .nav-dot.active {
+            background: #fff;
+            opacity: 1;
+        }
+
+        .nav-dot:hover {
+            opacity: 1;
+            transform: scale(1.3);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 1024px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .category-card:last-child {
+                grid-column: 1 / -1;
+            }
+
+            .crawl-text {
+                font-size: clamp(1.5rem, 4vw, 3rem);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .category-card {
+                min-height: 200px;
+                padding: 2rem 1rem;
+            }
+
+            .category-card:last-child {
+                grid-column: auto;
+            }
+
+            .project-card {
+                width: 90vw;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                padding-left: 2rem;
+            }
+
+            .nav-dots {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* PAGE TRANSITION */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.87, 0, 0.13, 1);
+        }
+
+        .page-transition.active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <!-- STAR WARS OPENING CRAWL -->
+    <div class="star-wars-crawl">
+        <div class="crawl-container">
+            <div class="crawl-text">
+                ELIAN KIMANI
+                <br><br>
+                AI ARCHITECT / ENGINEER / LEADER
+                <br><br><br>
+                Building intelligent systems that drive
+                social impact across East Africa.
+                <br><br>
+                Specializing in AI solutions for banking,
+                insurance, government, and community
+                development.
+                <br><br>
+                Creating technology that scales and
+                delivers measurable ROI.
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-transition"></div>
+
+    <div class="scroll-indicator">SCROLL</div>
+
+    <div class="nav-dots">
+        <div class="nav-dot active" data-section="0"></div>
+        <div class="nav-dot" data-section="1"></div>
+        <div class="nav-dot" data-section="2"></div>
+        <div class="nav-dot" data-section="3"></div>
+        <div class="nav-dot" data-section="4"></div>
+        <div class="nav-dot" data-section="5"></div>
+    </div>
+
+    <div class="content">
+        <!-- HERO -->
+        <section class="hero" data-section="0">
+            <h1>ELIAN<br>KIMANI</h1>
+            <div class="subtitle">AI ARCHITECT / ENGINEER / LEADER</div>
+            
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">YEARS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">AI PROJECTS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">RECORDS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">03</div>
+                    <div class="stat-label">COUNTRIES</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section data-section="1">
+            <div style="max-width: 1200px; text-align: center;">
+                <h2 class="section-title">VISION</h2>
+                <p style="font-size: clamp(1.25rem, 3vw, 2rem); line-height: 1.4; font-weight: 300; opacity: 0.8;">
+                    BUILDING INTELLIGENT SYSTEMS THAT DRIVE SOCIAL IMPACT ACROSS EAST AFRICA. 
+                    SPECIALIZING IN AI SOLUTIONS FOR BANKING, INSURANCE, GOVERNMENT, AND COMMUNITY DEVELOPMENT.
+                    CREATING TECHNOLOGY THAT SCALES AND DELIVERS MEASURABLE ROI.
+                </p>
+            </div>
+        </section>
+
+        <!-- WORK CATEGORIES -->
+        <section data-section="2">
+            <div>
+                <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">WORK</h2>
+                <div class="category-grid">
+                    <div class="category-card" data-category="ai-ml">
+                        <div class="category-number">01</div>
+                        <div class="category-title">AI &<br>MACHINE<br>LEARNING</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="vision-ocr">
+                        <div class="category-number">02</div>
+                        <div class="category-title">COMPUTER<br>VISION<br>& OCR</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="blockchain">
+                        <div class="category-number">03</div>
+                        <div class="category-title">BLOCKCHAIN<br>& WEB3</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="banking">
+                        <div class="category-number">04</div>
+                        <div class="category-title">MOBILE<br>BANKING</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="enterprise">
+                        <div class="category-number">05</div>
+                        <div class="category-title">ENTERPRISE<br>SYSTEMS</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="uiux">
+                        <div class="category-number">06</div>
+                        <div class="category-title">UI/UX<br>DESIGN</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="data-science">
+                        <div class="category-number">07</div>
+                        <div class="category-title">DATA<br>SCIENCE &<br>ANALYTICS</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section data-section="3">
+            <div>
+                <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">SKILLS</h2>
+                <div class="skills-grid">
+                    <div class="skill-item"><div class="skill-name">TENSORFLOW</div></div>
+                    <div class="skill-item"><div class="skill-name">PYTORCH</div></div>
+                    <div class="skill-item"><div class="skill-name">COMPUTER VISION</div></div>
+                    <div class="skill-item"><div class="skill-name">NLP</div></div>
+                    <div class="skill-item"><div class="skill-name">PYTHON</div></div>
+                    <div class="skill-item"><div class="skill-name">DJANGO</div></div>
+                    <div class="skill-item"><div class="skill-name">REACT</div></div>
+                    <div class="skill-item"><div class="skill-name">NODE.JS</div></div>
+                    <div class="skill-item"><div class="skill-name">ANDROID</div></div>
+                    <div class="skill-item"><div class="skill-name">IOS</div></div>
+                    <div class="skill-item"><div class="skill-name">AWS</div></div>
+                    <div class="skill-item"><div class="skill-name">DOCKER</div></div>
+                    <div class="skill-item"><div class="skill-name">KUBERNETES</div></div>
+                    <div class="skill-item"><div class="skill-name">POSTGRESQL</div></div>
+                    <div class="skill-item"><div class="skill-name">MONGODB</div></div>
+                    <div class="skill-item"><div class="skill-name">AIRFLOW</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section data-section="4">
+            <div>
+                <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">JOURNEY</h2>
+                <div class="experience-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">MAY 2025 - PRESENT</div>
+                        <div class="timeline-title">HEAD OF AI & MOBILE</div>
+                        <div class="timeline-company">E&M TECHNOLOGY HOUSE</div>
+                        <div class="timeline-desc">
+                            LEAD AI AND MOBILE DIVISIONS. DESIGN INTELLIGENT SOLUTIONS FOR FINANCE, 
+                            INSURANCE, AGRICULTURE, GOVERNMENT. DELIVERED NUSAF IV, OCR SYSTEMS, 
+                            LIVESTOCK TRACKING. TECHNICAL DEMOS FOR GOVERNMENT OFFICIALS.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">FEB 2025 - APR 2025</div>
+                        <div class="timeline-title">HEAD OF MOBILE</div>
+                        <div class="timeline-company">E&M TECHNOLOGY HOUSE</div>
+                        <div class="timeline-desc">
+                            LED ALL MOBILE INITIATIVES. DEVELOPED VCB & CARITAS BANK APPS. 
+                            FINACLE INTEGRATION. PRODUCTION DEPLOYMENT. CLIENT TRAINING.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">AUG 2024 - JAN 2025</div>
+                        <div class="timeline-title">FULL-STACK DEVELOPER</div>
+                        <div class="timeline-company">E&M TECHNOLOGY HOUSE</div>
+                        <div class="timeline-desc">
+                            VCB-CBK REPORTING SYSTEM. AUTOMATED COMPLIANCE. 
+                            DJANGO, AIRFLOW, CELERY. STANDARD CHARTERED PLATFORMS. 
+                            EQUITY BANK RECONCILIATION.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">DEC 2020 - FEB 2022</div>
+                        <div class="timeline-title">SENIOR DEVELOPER</div>
+                        <div class="timeline-company">RISET SOFTWARE</div>
+                        <div class="timeline-desc">
+                            ERP & POS SYSTEMS. IOT WEIGHBRIDGE INTEGRATION. 
+                            M-PESA APIS. CONCRETE BATCHING AUTOMATION. 
+                            .NET, SPRING BOOT, MYSQL.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact-section" data-section="5">
+            <div style="max-width: 800px; width: 100%;">
+                <h2 class="section-title" style="text-align: center;">CONNECT</h2>
+                
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="YOUR EMAIL"
+                            required
+                            class="form-input"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            placeholder="YOUR MESSAGE"
+                            required
+                            class="form-textarea"
+                        ></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submit-btn" class="form-submit">SEND</button>
+                    
+                    <div id="form-status" class="form-status"></div>
+                </form>
+                
+                <div style="margin-top: 4rem; font-size: 0.875rem; letter-spacing: 0.3em; opacity: 0.5; text-align: center;">
+                    NAIROBI, KENYA
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PROJECT PAGES (Dynamic) -->
+    <div id="project-pages-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="projects-data.js"></script>
+    <script src="updated-script.js"></script>
+    
+    <script>
+        // Hide crawl text when user scrolls
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+<!-- this is tHE MAIN Page the above is  test -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELIAN KIMANI</title>
     <style>
         * {
             margin: 0;
@@ -872,4 +1845,4 @@
     <script src="projects-data.js"></script>
     <script src="script.js"></script>
 </body>
-</html>
+</html> -->
