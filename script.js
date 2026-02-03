@@ -207,26 +207,151 @@ function updateActiveSection() {
         
         if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
             dots.forEach(dot => dot.classList.remove('active'));
-            dots[index].classList.add('active');
+            if(dots[index]) dots[index].classList.add('active');
         }
     });
     
     // Hide scroll indicator after first section
     const scrollIndicator = document.querySelector('.scroll-indicator');
-    if(window.scrollY > window.innerHeight * 0.5) {
-        scrollIndicator.style.opacity = '0';
-    } else {
-        scrollIndicator.style.opacity = '0.5';
+    if(scrollIndicator) {
+        if(window.scrollY > window.innerHeight * 0.5) {
+            scrollIndicator.style.opacity = '0';
+        } else {
+            scrollIndicator.style.opacity = '0.5';
+        }
     }
 }
 
-// Project item interactions
-document.addEventListener('DOMContentLoaded', () => {
-    const projectItems = document.querySelectorAll('.project-item');
+// PROJECT PAGES FUNCTIONALITY
+function createProjectPages() {
+    const container = document.getElementById('project-pages-container');
     
-    projectItems.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            // Add subtle shake to geometric shapes
+    Object.keys(projectsData).forEach(categoryKey => {
+        const category = projectsData[categoryKey];
+        const projectPage = document.createElement('div');
+        projectPage.className = 'project-page';
+        projectPage.id = `page-${categoryKey}`;
+        
+        // Header
+        const header = `
+            <div class="project-header">
+                <button class="back-btn" onclick="closeProjectPage('${categoryKey}')">← BACK</button>
+                <div class="project-category-title">${category.title}</div>
+                <div class="project-counter"><span id="counter-${categoryKey}">1</span>/${category.projects.length}</div>
+            </div>
+        `;
+        
+        // Projects scroll container
+        let projectsHTML = '<div class="project-scroll-container" id="scroll-' + categoryKey + '">';
+        projectsHTML += '<div class="project-cards-wrapper">';
+        
+        category.projects.forEach((project, index) => {
+            const linkHTML = project.link 
+                ? `<a href="${project.link}" target="_blank" class="project-link">VIEW PROJECT</a>`
+                : `<div class="project-link disabled">IN PRODUCTION</div>`;
+            
+            projectsHTML += `
+                <div class="project-card" data-index="${index}">
+                    <div class="project-card-number">${String(index + 1).padStart(2, '0')}</div>
+                    <div class="project-card-title">${project.title}</div>
+                    <div class="project-card-desc">${project.description}</div>
+                    <div class="project-tags">
+                        ${project.tech.map(tech => `<span class="project-tag">${tech}</span>`).join('')}
+                    </div>
+                    ${linkHTML}
+                </div>
+            `;
+        });
+        
+        projectsHTML += '</div></div>';
+        
+        // Scroll hint
+        const scrollHint = '<div class="scroll-hint">← DRAG TO SCROLL →</div>';
+        
+        projectPage.innerHTML = header + projectsHTML + scrollHint;
+        container.appendChild(projectPage);
+        
+        // Add scroll listener for counter update
+        const scrollContainer = projectPage.querySelector('.project-scroll-container');
+        scrollContainer.addEventListener('scroll', () => updateProjectCounter(categoryKey, scrollContainer));
+    });
+}
+
+function updateProjectCounter(categoryKey, scrollContainer) {
+    const cards = scrollContainer.querySelectorAll('.project-card');
+    const scrollLeft = scrollContainer.scrollLeft;
+    const containerWidth = scrollContainer.offsetWidth;
+    
+    cards.forEach((card, index) => {
+        const cardLeft = card.offsetLeft - scrollContainer.offsetLeft;
+        const cardCenter = cardLeft + (card.offsetWidth / 2);
+        const viewportCenter = scrollLeft + (containerWidth / 2);
+        
+        if (Math.abs(cardCenter - viewportCenter) < card.offsetWidth / 2) {
+            const counter = document.getElementById(`counter-${categoryKey}`);
+            if(counter) counter.textContent = index + 1;
+        }
+    });
+}
+
+function openProjectPage(categoryKey) {
+    const page = document.getElementById(`page-${categoryKey}`);
+    const transition = document.querySelector('.page-transition');
+    
+    // Page transition effect
+    transition.classList.add('active');
+    
+    setTimeout(() => {
+        // Hide main content
+        document.querySelector('.content').style.display = 'none';
+        document.querySelector('.nav-dots').style.display = 'none';
+        document.querySelector('.scroll-indicator').style.display = 'none';
+        
+        // Show project page
+        page.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Remove transition
+        transition.classList.remove('active');
+    }, 500);
+}
+
+function closeProjectPage(categoryKey) {
+    const page = document.getElementById(`page-${categoryKey}`);
+    const transition = document.querySelector('.page-transition');
+    
+    // Page transition effect
+    transition.classList.add('active');
+    
+    setTimeout(() => {
+        // Hide project page
+        page.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Show main content
+        document.querySelector('.content').style.display = 'block';
+        document.querySelector('.nav-dots').style.display = 'flex';
+        document.querySelector('.scroll-indicator').style.display = 'block';
+        
+        // Remove transition
+        setTimeout(() => {
+            transition.classList.remove('active');
+        }, 100);
+    }, 500);
+}
+
+// CATEGORY CARD CLICK HANDLERS
+function setupCategoryCards() {
+    const categoryCards = document.querySelectorAll('.category-card');
+    
+    categoryCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const category = card.getAttribute('data-category');
+            openProjectPage(category);
+        });
+        
+        // Hover effect on shapes
+        card.addEventListener('mouseenter', () => {
             scene.children.forEach(child => {
                 if(child.userData.type) {
                     child.rotation.x += Math.random() * 0.1 - 0.05;
@@ -235,77 +360,29 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
-    
-    // Skill item interactions
+}
+
+// SKILL INTERACTIONS
+function setupSkillInteractions() {
     const skillItems = document.querySelectorAll('.skill-item');
     
     skillItems.forEach(item => {
         item.addEventListener('mouseenter', () => {
-            // Burst effect on particles
             if(particlesMesh) {
                 particlesMesh.rotation.x += 0.1;
                 particlesMesh.rotation.y += 0.1;
             }
         });
     });
-});
+}
 
-// Smooth scroll for all anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if(target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-    const sections = document.querySelectorAll('section');
-    const currentSection = Array.from(sections).findIndex(section => {
-        const rect = section.getBoundingClientRect();
-        return rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
-    });
-    
-    if(e.key === 'ArrowDown' && currentSection < sections.length - 1) {
-        e.preventDefault();
-        sections[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
-    } else if(e.key === 'ArrowUp' && currentSection > 0) {
-        e.preventDefault();
-        sections[currentSection - 1].scrollIntoView({ behavior: 'smooth' });
-    }
-});
-
-// Initialize Three.js when page loads
-window.addEventListener('load', init);
-
-// Add loading animation
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 1s ease';
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
-// Performance optimization - pause animations when tab is not visible
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        // Pause animations
-        renderer.setAnimationLoop(null);
-    } else {
-        // Resume animations
-        renderer.setAnimationLoop(animate);
-    }
-});
-
-// Contact Form Handler - Uses Vercel Serverless Function
-document.addEventListener('DOMContentLoaded', () => {
+// CONTACT FORM HANDLER
+function setupContactForm() {
     const contactForm = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
     const formStatus = document.getElementById('form-status');
+    
+    if(!contactForm) return;
     
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -319,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.style.opacity = '0.5';
         
         try {
-            // Call Vercel serverless function
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: {
@@ -334,35 +410,83 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             
             if (response.ok) {
-                // Success
                 formStatus.textContent = 'MESSAGE SENT SUCCESSFULLY';
-                formStatus.style.opacity = '1';
+                formStatus.classList.add('visible');
                 formStatus.style.color = '#fff';
-                
-                // Reset form
                 contactForm.reset();
                 
-                // Hide success message after 5 seconds
                 setTimeout(() => {
-                    formStatus.style.opacity = '0';
+                    formStatus.classList.remove('visible');
                 }, 5000);
             } else {
                 throw new Error(data.error || 'Failed to send message');
             }
         } catch (error) {
-            // Error
             formStatus.textContent = 'FAILED TO SEND. TRY AGAIN.';
-            formStatus.style.opacity = '1';
+            formStatus.classList.add('visible');
             formStatus.style.color = '#ff4444';
             
             setTimeout(() => {
-                formStatus.style.opacity = '0';
+                formStatus.classList.remove('visible');
             }, 5000);
         } finally {
-            // Re-enable button
             submitBtn.disabled = false;
             submitBtn.textContent = 'SEND';
             submitBtn.style.opacity = '1';
         }
     });
+}
+
+// KEYBOARD NAVIGATION
+function setupKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+        const sections = document.querySelectorAll('section');
+        const currentSection = Array.from(sections).findIndex(section => {
+            const rect = section.getBoundingClientRect();
+            return rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
+        });
+        
+        if(e.key === 'ArrowDown' && currentSection < sections.length - 1) {
+            e.preventDefault();
+            sections[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
+        } else if(e.key === 'ArrowUp' && currentSection > 0) {
+            e.preventDefault();
+            sections[currentSection - 1].scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // ESC to close project pages
+        if(e.key === 'Escape') {
+            const activePage = document.querySelector('.project-page.active');
+            if(activePage) {
+                const categoryKey = activePage.id.replace('page-', '');
+                closeProjectPage(categoryKey);
+            }
+        }
+    });
+}
+
+// INITIALIZATION
+window.addEventListener('load', () => {
+    init();
+    createProjectPages();
+    setupCategoryCards();
+    setupSkillInteractions();
+    setupContactForm();
+    setupKeyboardNav();
+    
+    // Loading animation
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        document.body.style.transition = 'opacity 1s ease';
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+// PERFORMANCE OPTIMIZATION
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        renderer.setAnimationLoop(null);
+    } else {
+        renderer.setAnimationLoop(animate);
+    }
 });
