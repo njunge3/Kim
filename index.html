@@ -75,70 +75,260 @@
             mix-blend-mode: difference;
         }
 
-        .project-grid {
+        /* CATEGORY GRID STYLES */
+        .category-grid {
             max-width: 1400px;
             width: 100%;
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 0;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2rem;
         }
 
-        .project-item {
-            border-top: 2px solid #fff;
-            padding: 3rem 2rem;
-            transition: background 0.3s ease;
+        .category-card {
+            border: 2px solid #fff;
+            padding: 4rem 2rem;
+            text-align: center;
             cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            background: #000;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .project-item:hover {
+        .category-card:hover {
             background: #fff;
             color: #000;
+            transform: scale(1.02);
         }
 
-        .project-item:last-child {
-            border-bottom: 2px solid #fff;
-        }
-
-        .project-number {
+        .category-number {
             font-size: 1rem;
             font-weight: 700;
             letter-spacing: 0.2em;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             opacity: 0.5;
         }
 
-        .project-title {
-            font-size: clamp(2rem, 5vw, 4rem);
+        .category-card:hover .category-number {
+            opacity: 1;
+        }
+
+        .category-title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
             font-weight: 900;
             letter-spacing: -0.02em;
             text-transform: uppercase;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .category-enter {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-top: 1rem;
+        }
+
+        .category-card:hover .category-enter {
+            opacity: 1;
+        }
+
+        /* PROJECT PAGE STYLES */
+        .project-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .project-page.active {
+            display: block;
+        }
+
+        .project-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            border-bottom: 2px solid #fff;
+            z-index: 101;
+        }
+
+        .back-btn {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-0.5rem);
+        }
+
+        .project-category-title {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .project-counter {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            opacity: 0.5;
+        }
+
+        .project-scroll-container {
+            position: absolute;
+            top: 120px;
+            left: 0;
+            right: 0;
+            bottom: 100px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            padding: 2rem;
+            scroll-behavior: smooth;
+        }
+
+        .project-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .project-scroll-container::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .project-scroll-container::-webkit-scrollbar-thumb {
+            background: #fff;
+        }
+
+        .project-cards-wrapper {
+            display: inline-flex;
+            gap: 3rem;
+            padding: 2rem;
+        }
+
+        .project-card {
+            display: inline-block;
+            width: 600px;
+            max-width: 90vw;
+            border: 2px solid #fff;
+            padding: 3rem;
+            background: #000;
+            transition: all 0.3s ease;
+            white-space: normal;
+            vertical-align: top;
+        }
+
+        .project-card:hover {
+            transform: translateY(-1rem);
+            border-color: #fff;
+            box-shadow: 0 2rem 4rem rgba(255, 255, 255, 0.1);
+        }
+
+        .project-card-number {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            opacity: 0.5;
             margin-bottom: 1rem;
         }
 
-        .project-desc {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            font-weight: 300;
-            line-height: 1.4;
-            max-width: 800px;
+        .project-card-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+
+        .project-card-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
             opacity: 0.8;
+            font-weight: 300;
         }
 
         .project-tags {
-            margin-top: 1.5rem;
             display: flex;
-            gap: 1rem;
             flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
         }
 
-        .tag {
-            padding: 0.5rem 1.5rem;
-            border: 1px solid currentColor;
-            font-size: 0.875rem;
+        .project-tag {
+            padding: 0.5rem 1rem;
+            border: 1px solid #fff;
+            font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
+        .project-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 2px solid #fff;
+        }
+
+        .project-link:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .project-link.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .scroll-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            z-index: 101;
+        }
+
+        /* SKILLS GRID */
         .skills-grid {
             max-width: 1400px;
             width: 100%;
@@ -170,32 +360,7 @@
             letter-spacing: 0.05em;
         }
 
-        .contact-section {
-            text-align: center;
-            padding: 6rem 2rem;
-        }
-
-        .contact-info {
-            margin-top: 3rem;
-        }
-
-        .contact-item {
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin: 1rem 0;
-            text-decoration: none;
-            color: inherit;
-            display: inline-block;
-            transition: all 0.3s ease;
-            border-bottom: 2px solid transparent;
-        }
-
-        .contact-item:hover {
-            border-bottom: 2px solid #fff;
-            transform: translateX(1rem);
-        }
-
+        /* EXPERIENCE TIMELINE */
         .experience-timeline {
             max-width: 1200px;
             width: 100%;
@@ -248,6 +413,85 @@
             opacity: 0.7;
         }
 
+        /* CONTACT FORM */
+        .contact-section {
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .contact-form {
+            max-width: 800px;
+            width: 100%;
+            margin: 3rem auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1.5rem;
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #666;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 200px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1.5rem;
+            background: #fff;
+            color: #000;
+            border: none;
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .form-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-status {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-status.visible {
+            opacity: 1;
+        }
+
+        /* STATS */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -279,46 +523,7 @@
             opacity: 0.6;
         }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            .section-title {
-                font-size: 2.5rem;
-            }
-            
-            .project-title {
-                font-size: 1.5rem;
-            }
-            
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .timeline-item {
-                padding-left: 2rem;
-            }
-        }
-
-        .scroll-indicator {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.75rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            opacity: 0.5;
-            z-index: 1000;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
+        /* NAVIGATION DOTS */
         .nav-dots {
             position: fixed;
             right: 2rem;
@@ -350,15 +555,82 @@
             transform: scale(1.3);
         }
 
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .category-card {
+                min-height: 200px;
+                padding: 2rem 1rem;
+            }
+
+            .project-card {
+                width: 90vw;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                padding-left: 2rem;
+            }
+
             .nav-dots {
                 display: none;
             }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* PAGE TRANSITION */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.87, 0, 0.13, 1);
+        }
+
+        .page-transition.active {
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
     <div id="canvas-container"></div>
+    <div class="page-transition"></div>
 
     <div class="scroll-indicator">SCROLL</div>
 
@@ -409,89 +681,45 @@
             </div>
         </section>
 
-        <!-- PROJECTS -->
+        <!-- WORK CATEGORIES -->
         <section data-section="2">
             <div>
                 <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">WORK</h2>
-                <div class="project-grid">
-                    <div class="project-item">
-                        <div class="project-number">01</div>
-                        <div class="project-title">NUSAF IV</div>
-                        <div class="project-desc">
-                            AI-POWERED SOCIAL WELFARE PLATFORM FOR UGANDA GOVERNMENT. 
-                            FACIAL RECOGNITION, FRAUD DETECTION, FINGERPRINT VERIFICATION. 
-                            OFFLINE-FIRST MOBILE ARCHITECTURE FOR RURAL DEPLOYMENT.
-                        </div>
-                        <div class="project-tags">
-                            <span class="tag">TENSORFLOW</span>
-                            <span class="tag">COMPUTER VISION</span>
-                            <span class="tag">FRAUD ML</span>
-                            <span class="tag">DJANGO</span>
-                        </div>
+                <div class="category-grid">
+                    <div class="category-card" data-category="ai-ml">
+                        <div class="category-number">01</div>
+                        <div class="category-title">AI &<br>MACHINE<br>LEARNING</div>
+                        <div class="category-enter">[ENTER]</div>
                     </div>
 
-                    <div class="project-item">
-                        <div class="project-number">02</div>
-                        <div class="project-title">OCR AUTOMATION</div>
-                        <div class="project-desc">
-                            ENTERPRISE OCR SYSTEM FOR SAFARICOM & CIC INSURANCE. 
-                            CONVERTS MEDICAL CLAIMS TO STRUCTURED DATA. 
-                            SAVES MILLIONS IN MANUAL UNDERWRITING ERRORS.
-                        </div>
-                        <div class="project-tags">
-                            <span class="tag">TESSERACT</span>
-                            <span class="tag">OPENCV</span>
-                            <span class="tag">PYTHON</span>
-                            <span class="tag">API</span>
-                        </div>
+                    <div class="category-card" data-category="vision-ocr">
+                        <div class="category-number">02</div>
+                        <div class="category-title">COMPUTER<br>VISION<br>& OCR</div>
+                        <div class="category-enter">[ENTER]</div>
                     </div>
 
-                    <div class="project-item">
-                        <div class="project-number">03</div>
-                        <div class="project-title">MIFUGO LIVESTOCK</div>
-                        <div class="project-desc">
-                            CNN-BASED CATTLE BIOMETRIC IDENTIFICATION. 
-                            MUZZLE PATTERN RECOGNITION FOR THEFT PREVENTION. 
-                            50,000+ CATTLE TRACKED FOR KENYA GOVERNMENT.
-                        </div>
-                        <div class="project-tags">
-                            <span class="tag">PYTORCH</span>
-                            <span class="tag">CNN</span>
-                            <span class="tag">MOBILE AI</span>
-                            <span class="tag">ANDROID</span>
-                        </div>
+                    <div class="category-card" data-category="blockchain">
+                        <div class="category-number">03</div>
+                        <div class="category-title">BLOCKCHAIN<br>& WEB3</div>
+                        <div class="category-enter">[ENTER]</div>
                     </div>
 
-                    <div class="project-item">
-                        <div class="project-number">04</div>
-                        <div class="project-title">VCB BANKING</div>
-                        <div class="project-desc">
-                            MOBILE BANKING APPS FOR ANDROID & IOS. 
-                            FINACLE INTEGRATION WITH CBK COMPLIANCE. 
-                            SECURE PRODUCTION-GRADE FINANCIAL SERVICES.
-                        </div>
-                        <div class="project-tags">
-                            <span class="tag">ANDROID</span>
-                            <span class="tag">IOS</span>
-                            <span class="tag">BANKING</span>
-                            <span class="tag">SECURITY</span>
-                        </div>
+                    <div class="category-card" data-category="banking">
+                        <div class="category-number">04</div>
+                        <div class="category-title">MOBILE<br>BANKING</div>
+                        <div class="category-enter">[ENTER]</div>
                     </div>
 
-                    <div class="project-item">
-                        <div class="project-number">05</div>
-                        <div class="project-title">BLOCKCHAIN PLATFORM</div>
-                        <div class="project-desc">
-                            EMERGING: BIOMETRIC IDENTITY ON BLOCKCHAIN. 
-                            SMART CONTRACTS FOR LIVESTOCK INVESTMENT. 
-                            DECENTRALIZED ASSET LEDGER FOR MICRO-LOANS.
-                        </div>
-                        <div class="project-tags">
-                            <span class="tag">BLOCKCHAIN</span>
-                            <span class="tag">SMART CONTRACTS</span>
-                            <span class="tag">BIOMETRICS</span>
-                            <span class="tag">WEB3</span>
-                        </div>
+                    <div class="category-card" data-category="enterprise">
+                        <div class="category-number">05</div>
+                        <div class="category-title">ENTERPRISE<br>SYSTEMS</div>
+                        <div class="category-enter">[ENTER]</div>
+                    </div>
+
+                    <div class="category-card" data-category="uiux">
+                        <div class="category-number">06</div>
+                        <div class="category-title">UI/UX<br>DESIGN</div>
+                        <div class="category-enter">[ENTER]</div>
                     </div>
                 </div>
             </div>
@@ -502,54 +730,22 @@
             <div>
                 <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">SKILLS</h2>
                 <div class="skills-grid">
-                    <div class="skill-item">
-                        <div class="skill-name">TENSORFLOW</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">PYTORCH</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">COMPUTER VISION</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">NLP</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">PYTHON</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">DJANGO</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">REACT</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">NODE.JS</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">ANDROID</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">IOS</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">AWS</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">DOCKER</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">KUBERNETES</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">POSTGRESQL</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">MONGODB</div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name">AIRFLOW</div>
-                    </div>
+                    <div class="skill-item"><div class="skill-name">TENSORFLOW</div></div>
+                    <div class="skill-item"><div class="skill-name">PYTORCH</div></div>
+                    <div class="skill-item"><div class="skill-name">COMPUTER VISION</div></div>
+                    <div class="skill-item"><div class="skill-name">NLP</div></div>
+                    <div class="skill-item"><div class="skill-name">PYTHON</div></div>
+                    <div class="skill-item"><div class="skill-name">DJANGO</div></div>
+                    <div class="skill-item"><div class="skill-name">REACT</div></div>
+                    <div class="skill-item"><div class="skill-name">NODE.JS</div></div>
+                    <div class="skill-item"><div class="skill-name">ANDROID</div></div>
+                    <div class="skill-item"><div class="skill-name">IOS</div></div>
+                    <div class="skill-item"><div class="skill-name">AWS</div></div>
+                    <div class="skill-item"><div class="skill-name">DOCKER</div></div>
+                    <div class="skill-item"><div class="skill-name">KUBERNETES</div></div>
+                    <div class="skill-item"><div class="skill-name">POSTGRESQL</div></div>
+                    <div class="skill-item"><div class="skill-name">MONGODB</div></div>
+                    <div class="skill-item"><div class="skill-name">AIRFLOW</div></div>
                 </div>
             </div>
         </section>
@@ -610,40 +806,31 @@
             <div style="max-width: 800px; width: 100%;">
                 <h2 class="section-title" style="text-align: center;">CONNECT</h2>
                 
-                <form id="contact-form" style="margin-top: 3rem;">
-                    <div style="margin-bottom: 2rem;">
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
                         <input 
                             type="email" 
                             id="email" 
                             name="email" 
                             placeholder="YOUR EMAIL"
                             required
-                            style="width: 100%; padding: 1.5rem; background: transparent; border: 2px solid #fff; color: #fff; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;"
+                            class="form-input"
                         >
                     </div>
                     
-                    <div style="margin-bottom: 2rem;">
+                    <div class="form-group">
                         <textarea 
                             id="message" 
                             name="message" 
                             placeholder="YOUR MESSAGE"
                             required
-                            rows="8"
-                            style="width: 100%; padding: 1.5rem; background: transparent; border: 2px solid #fff; color: #fff; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; resize: vertical; font-family: 'Helvetica Neue', Arial, sans-serif;"
+                            class="form-textarea"
                         ></textarea>
                     </div>
                     
-                    <button 
-                        type="submit" 
-                        id="submit-btn"
-                        style="width: 100%; padding: 1.5rem; background: #fff; color: #000; border: none; font-size: 1.25rem; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;"
-                        onmouseover="this.style.background='#000'; this.style.color='#fff'; this.style.border='2px solid #fff';"
-                        onmouseout="this.style.background='#fff'; this.style.color='#000'; this.style.border='none';"
-                    >
-                        SEND
-                    </button>
+                    <button type="submit" id="submit-btn" class="form-submit">SEND</button>
                     
-                    <div id="form-status" style="margin-top: 1.5rem; text-align: center; font-size: 0.875rem; letter-spacing: 0.2em; opacity: 0; transition: opacity 0.3s ease;"></div>
+                    <div id="form-status" class="form-status"></div>
                 </form>
                 
                 <div style="margin-top: 4rem; font-size: 0.875rem; letter-spacing: 0.3em; opacity: 0.5; text-align: center;">
@@ -653,7 +840,11 @@
         </section>
     </div>
 
+    <!-- PROJECT PAGES (Dynamic) -->
+    <div id="project-pages-container"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="projects-data.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
