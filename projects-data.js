@@ -101,12 +101,12 @@ const projectsData = {
         ]
     },
     'banking': {
-        title: 'MOBILE BANKING',
+        title: 'INTERNET BANKING',
         projects: [
             {
-                title: 'VCB BANK MOBILE',
+                title: 'VCB BANK IB',
                 description: 'PRODUCTION-GRADE MOBILE BANKING APPLICATION FOR VCB BANK. ANDROID AND iOS NATIVE APPS. FINACLE CORE BANKING INTEGRATION. SECURE AUTHENTICATION WITH BIOMETRICS. REAL-TIME BALANCE UPDATES. FUND TRANSFERS, BILL PAYMENTS, ACCOUNT MANAGEMENT. CBK COMPLIANCE.',
-                tech: ['ANDROID', 'IOS', 'KOTLIN', 'SWIFT', 'FINACLE', 'BANKING APIs', 'SECURITY'],
+                tech: ['ANDROID', 'IOS', 'KOTLIN', 'SWIFT', 'FINACLE', 'Java', 'SECURITY'],
                 link: null,
                 status: 'LIVE'
             },
